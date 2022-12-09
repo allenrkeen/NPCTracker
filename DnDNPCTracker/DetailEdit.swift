@@ -20,9 +20,9 @@ struct detailEditView: View {
             Form {
                 Section() {
                     TextField("Name", text: Binding($npc.name)!)
-                    Picker("Race", selection: $npc.race){
+                    Picker("Race", selection: Binding($npc.race)!){
                         ForEach(Race.allCases, id: \.self) {
-                            race in Text(race.rawValue)
+                            race in Text(race.rawValue).tag(race.rawValue)
                         }
                     }
 //                    TextField("Race", text: $race)

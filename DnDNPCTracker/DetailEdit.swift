@@ -9,6 +9,9 @@ import SwiftUI
 import Foundation
 
 struct detailEditView: View {
+    @State private var isEditView = false
+    
+    @Environment(\.dismiss) var dismiss
     @Environment(\.managedObjectContext) private var viewContext
     @ObservedObject var npc: NPC
     
@@ -41,6 +44,24 @@ struct detailEditView: View {
                 }
             }.frame(maxWidth: .infinity, maxHeight: .infinity)
 
+        }.toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel") {
+                    isEditView = false
+                    dismiss()
+                }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Save") {
+                    isEditView = false
+                    do {
+                        try viewContext.save()
+                    } catch let err{
+                        print(err.localizedDescription)
+                    }
+                    dismiss()
+                }
+            }
         }
     }
 }

@@ -75,18 +75,7 @@ struct NPCView: View {
                 NavigationView {
                     detailEditView(npc: npc)
                         .navigationTitle(npc.name!)
-                        .toolbar {
-                            ToolbarItem(placement: .cancellationAction) {
-                                Button("Cancel") {
-                                    isEditView = false
-                                }
-                            }
-                            ToolbarItem(placement: .confirmationAction) {
-                                Button("Save") {
-                                    isEditView = false
-                                }
-                            }
-                        }
+                        
                 }
             }
     }

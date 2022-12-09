@@ -19,66 +19,74 @@ struct NPCView: View {
         dateFormatter.timeStyle = .none
         
         self.npc = npc
+        
     }
     
     var body: some View {
         VStack(alignment: .leading){
-            HStack{
-                Text("Name:")
-                Text(npc.name ?? "Unknown Name")
-                Spacer()
-            }.padding(.horizontal)
-            HStack{
-                Text("Race:")
-                Text(npc.race ?? "")
-            }.padding(.horizontal)
-            HStack{
-                Text("Date Met:")
-                Text(dateFormatter.string(from: npc.date ?? Date()))
-            }.padding(.horizontal)
-            HStack{
-                if (npc.friendly == true) {
-                    Text("\(npc.name!) is friendly to the party.")
-                } else {
-                    Text("\(npc.name!) is not friendly to the party.")
+            List{
+                Section(header: Text("Name")){
+                    HStack{
+                        Text(npc.name ?? "Unknown Name")
+                    }
                 }
-            }.padding(.horizontal)
-            HStack{
-                if (npc.living == true) {
-                    Text("\(npc.name!) is still alive!")
-                } else {
-                    Text("\(npc.name!) is dead. ")
+                Section(header: Text("Race")) {
+                        HStack {
+                            Text(npc.race ?? "")
+                        }
+                    }
+                Section(header: Text("Date Met")) {
+                        HStack {
+                            Text(dateFormatter.string(from: npc.date ?? Date()))
+                        }
+                    }
+                Section(header: Text("Friendliness")) {
+                        if (npc.friendly == true) {
+                            Text("\(npc.name!) is friendly to the party.")
+                        } else {
+                            Text("\(npc.name!) is not friendly to the party.")
+                        }
+                    }
+                Section(header: Text("Alive")) {
+                        if (npc.living == true) {
+                            Text("\(npc.name!) is still alive!")
+                        } else {
+                            Text("\(npc.name!) is dead. ")
+                        }
+                    }
+                Section(header: Text("Location")){
+                    HStack{
+                        Text("The party met \(npc.name ?? "Unkown Name") at \(npc.location ?? "")")
+                    }
                 }
-            }.padding(.horizontal)
-            HStack{
-                Text("The party met \(npc.name ?? "Unkown Name") at \(npc.location ?? "")")
-            }.padding(.horizontal)
-            HStack{
-                VStack(alignment: .leading){
-                    Text("Appearance:")
-                    Text(npc.appearance ?? "")
+                Section(header: Text("Appearance")){
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(npc.appearance ?? "")
+                        }
+                    }
                 }
-            }.padding(.horizontal)
-            HStack{
-                VStack(alignment: .leading){
-                    Text("Notes:")
-                    Text(npc.notes ?? "")
+                Section(header: Text("Notes")){
+                    HStack{
+                        VStack(alignment: .leading){
+                            Text(npc.notes ?? "")
+                        }
+                    }
                 }
-            }.padding(.horizontal)
-        }.navigationTitle("NPC Details")
-            .toolbar{
-                Button("Edit") {
-                    isEditView = true
+            }.navigationTitle("NPC Details")
+                .toolbar{
+                    Button("Edit") {
+                        isEditView = true
+                    }
+                }
+                .sheet(isPresented: $isEditView) {
+                    NavigationView {
+                        detailEditView(npc: npc)
+                            .navigationTitle(npc.name!)
+                    }
                 }
             }
-            .sheet(isPresented: $isEditView) {
-                NavigationView {
-                    detailEditView(npc: npc)
-                        .navigationTitle(npc.name!)
-                        
-                }
-            }
-    }
+        }
 }
 
 
